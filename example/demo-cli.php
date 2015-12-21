@@ -11,7 +11,7 @@ switch ($GLOBALS['argc']) {
 		var_dump(SDHummingSearch($GLOBALS['argv'][1]));
 		break;
 	case 3:
-		var_dump(SDHummingLoadModel($GLOBALS['argv'][2]);
+		var_dump(SDHummingLoadModel($GLOBALS['argv'][2]));
 		var_dump(SDHummingSearch($GLOBALS['argv'][1]));
 		break;
 	case 4:

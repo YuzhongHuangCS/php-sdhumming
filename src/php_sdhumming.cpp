@@ -61,12 +61,17 @@ int nModels = 0;
 int nTotalModel = 0;
 int nTotalSongs = 0;
 
+PHP_INI_BEGIN()
+PHP_INI_ENTRY("sdhumming.model", "model/QBHModel.dat", PHP_INI_ALL, NULL)
+PHP_INI_ENTRY("sdhumming.info", "model/QBHModel.info", PHP_INI_ALL, NULL)
+PHP_INI_END()
+
 int load_model(char* model = NULL, char* info = NULL) {
 	if (model == NULL) {
-		model = "model/QBHModel.dat";
+		model = INI_STR("sdhumming.model");
 	}
 	if (info == NULL) {
-		info = "model/QBHModel.info";
+		info = INI_STR("sdhumming.info");
 	}
 
 	nTotalModel = SLoadModel(model, SQBHModels, nModels);
@@ -85,6 +90,8 @@ int load_model(char* model = NULL, char* info = NULL) {
 }
 
 PHP_MINIT_FUNCTION(sdhumming) {
+	REGISTER_INI_ENTRIES();
+
 	zend_class_entry ce;
 	INIT_CLASS_ENTRY(ce, "SDResultRow", sd_result_row_functions);
 	sd_result_row_ce = zend_register_internal_class(&ce TSRMLS_CC);
@@ -98,6 +105,8 @@ PHP_MINIT_FUNCTION(sdhumming) {
 
 // MSHUTDOWN implementation
 PHP_MSHUTDOWN_FUNCTION(sdhumming) {
+	UNREGISTER_INI_ENTRIES();
+
 	for (int i = 0; i < nModels; i++) {
 		delete[] SQBHModels[i].PhrasePos; 
 		delete[] SQBHModels[i].sNotes;	
@@ -170,7 +179,7 @@ PHP_FUNCTION(SDHummingSearch) {
 	zval *row, *id, *info, *score;
 	array_init(return_value);
 
-	for(int i=0;i<20;i++){
+	for (int i=0; i < 20; i++) {
 		MAKE_STD_ZVAL(row);
 		object_init_ex(row, sd_result_row_ce);
 
