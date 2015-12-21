@@ -4,6 +4,7 @@
 * Command Line Interface demo of php-sdhumming
 *
 * @author		Huang Yuzhong
+* @date 		2015/12/21
 */
 
 switch ($GLOBALS['argc']) {

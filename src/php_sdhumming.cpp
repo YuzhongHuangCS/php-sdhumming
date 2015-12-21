@@ -1,3 +1,10 @@
+/**
+* SDHumming binding for PHP
+*
+* @author		Huang Yuzhong
+* @date 		2015/12/21
+*/
+
 #ifdef HAVE_CONFIG_H
 	#include "config.h"
 #endif
@@ -213,6 +220,14 @@ PHP_FUNCTION(SDHummingBuildModel) {
 
 /**
 * SDHummingLoadModel implementation
+*
+* @param    string  $model  QBHModel.dat
+* @param    string  $info   QBHModel.info
+* @return   bool 			Result
+
+* PHP equivalent:
+*
+* function SDHummingLoadModel($model = ini_get('sdhumming.model'), $info = ini_get('sdhumming.info'));
 */
 PHP_FUNCTION(SDHummingLoadModel) {
 	char* model = NULL;
