@@ -1,7 +1,7 @@
 # php-sdhumming
 
 ---
-## Dependency (ubuntu)
+## Dependency (Written on Ubuntu 15.10)
 	sudo apt-get install build-essential php5 php5-dev
 
 ## Install

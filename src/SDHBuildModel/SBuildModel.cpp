@@ -104,8 +104,8 @@ int BuildSDHummingModel::Write2Model(){
 	char ModelIDTableFile[1024]="";
 	strcpy(NewModelFile,m_pszModelDir);
 	strcpy(ModelIDTableFile,m_pszModelDir);
-	strcat(NewModelFile,"\\QBH.Model");
-	strcat(ModelIDTableFile,"\\QBHModel.info");
+	strcat(NewModelFile,"/QBHModel.dat");
+	strcat(ModelIDTableFile,"/QBHModel.info");
 	
 	multimap<int, MidiMetaInfo>::iterator Iter;
 	for (Iter=m_FileTrackmap.begin();Iter!=m_FileTrackmap.end();++Iter){
