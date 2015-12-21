@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Web Interface demo of php-sdhumming
+* Web Interface example of php-sdhumming
 *
 * @author		Huang Yuzhong
 * @date 		2015/12/22
@@ -12,11 +12,11 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>php-sdhumming-demo</title>
+	<title>php-sdhumming-example</title>
 </head>
 <body>
-	<h1>php-sdhumming-demo</h1>
-	<form action="demo-web.php" method="post" enctype="multipart/form-data">
+	<h1>php-sdhumming-example</h1>
+	<form action="example-web.php" method="post" enctype="multipart/form-data">
 		<input type="file" name="file"/> 
 		<input type="submit"/>
 	</form>

@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Command Line Interface demo of php-sdhumming
+* Command Line Interface example of php-sdhumming
 *
 * @author		Huang Yuzhong
 * @date 		2015/12/21

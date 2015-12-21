@@ -24,6 +24,7 @@ extern "C"{
 #include "SDHumming/SDFuzzySearch.h"
 #include "SDHumming/SUtil.h"
 #include "SDHumming/SMelody.h"
+#include "SDHBuildModel/SBuildModel.h"
 
 #define PHP_SDHUMMING_EXTNAME "sdhumming"
 #define PHP_SDHUMMING_VERSION "1.0"
@@ -213,9 +214,39 @@ PHP_FUNCTION(SDHummingSearch) {
 
 /**
 * SDHummingBuildModel implementation
+*
+* @param    string  $mid 	Mid list file
+* @param 	string  $model  Model dir
+* @return   bool 			Result
+
+* PHP equivalent:
+*
+* function SDHummingBuildModel($mid, $model);
 */
 PHP_FUNCTION(SDHummingBuildModel) {
-	RETURN_STRING("This is SDHummingBuildModel function\n", 1);
+	char* mid = NULL;
+	int mid_len;
+	char* model = NULL;
+	int model_len;
+
+	/* accepting arguments */
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &mid, &mid_len, &model, &model_len) != SUCCESS) {
+		RETURN_BOOL(0);
+	}
+
+	BuildSDHummingModel myMidi(mid,model);
+
+	if(!myMidi.GenFilelist()){
+		php_printf("ERROR: Could Not Loading Label File!\n");
+		RETURN_BOOL(0);
+	}
+
+	if(myMidi.Write2Model()!=0){
+		php_printf("ERROR: Could Not Write New Model!\n");
+		RETURN_BOOL(0);
+	}
+
+	RETURN_BOOL(1);
 }
 
 /**
