@@ -350,7 +350,7 @@ int STranscribeQueryNote(float* fPitchArray,int& Len,SNote *&Query, int &nNoteLe
 	nNoteLen++;
 
 	Query=new SNote[nNoteLen];
-	nNoteLen=0;	
+	nNoteLen=0;
 
 	/* convert the note sequence into MIDI format */
 	CurrentNote=retVal->Next;
@@ -401,6 +401,10 @@ int SMelodyFeatureExtraction(char* filename, float*& pFeaBuf,int &nFeaLen, SNote
 		if(NULL!=pFeaBuf){
 			delete[] pFeaBuf;
 			pFeaBuf=NULL;
+		}
+		if(NULL!=Query){
+			delete[] Query;
+			Query=NULL;
 		}
 		return ERROR_CODE_TOO_SHORT_INPUT;
 	}

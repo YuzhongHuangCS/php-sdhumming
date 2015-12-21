@@ -61,7 +61,14 @@ int nModels = 0;
 int nTotalModel = 0;
 int nTotalSongs = 0;
 
-int load_model(char* model = "model/QBHModel.dat", char* info = "model/QBHModel.info") {
+int load_model(char* model = NULL, char* info = NULL) {
+	if (model == NULL) {
+		model = "model/QBHModel.dat";
+	}
+	if (info == NULL) {
+		info = "model/QBHModel.info";
+	}
+
 	nTotalModel = SLoadModel(model, SQBHModels, nModels);
 	if (nTotalModel <= 0) {
 		php_printf("Error on loading model!\n");
@@ -148,6 +155,10 @@ PHP_FUNCTION(SDHummingSearch) {
 	int nNoteLen=0;
 	SMelodyFeatureExtraction(audio, pFeaBuf, nFeaLen, QueryNotes, nNoteLen);	
 	
+	if (!pFeaBuf || !QueryNotes) {
+		return;
+	}
+
 	//2, Melody Search
 	NoteBasedResStru* myEMDResStru = new NoteBasedResStru[nTotalModel];
 	SNoteBasedMatch(SQBHModels, nModels, QueryNotes, nNoteLen,myEMDResStru,nFeaLen);
@@ -205,11 +216,5 @@ PHP_FUNCTION(SDHummingLoadModel) {
 		RETURN_BOOL(0);
 	}
 
-	if (model && info) {
-		RETURN_BOOL(load_model(model, info) + 1);
-	} else if (model) {
-		RETURN_BOOL(load_model(model) + 1);
-	} else {
-		RETURN_BOOL(load_model() + 1)
-	}
+	RETURN_BOOL(load_model(model, info) + 1);
 }
