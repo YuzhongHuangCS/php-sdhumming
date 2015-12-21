@@ -130,7 +130,9 @@ vector<string> ReadFromFile(char* filename){
 	string str; 
 	if(infile.is_open()){
 		while(getline(infile,str,'\n')) {
-			AllStrs.push_back(str);
+			if(str!=""){
+				AllStrs.push_back(str);
+			}
 		}
 	} 
 	infile.close();
@@ -141,22 +143,6 @@ string GetSubstring(string s,int start,int end){
 	return s.substr(start, end-start+1);
 }
 
-int ConvertMidilist(char* infile,char* outfile){
-	vector<string> InStrVec=ReadFromFile(infile);
-	FILE *fp=fopen(outfile,"wt");
-	for(int i=0;i<InStrVec.size();i++){
-		string subname;
-		
-		if((int)InStrVec[i].find_last_of('/')>0)
-			subname=GetSubstring(InStrVec[i],InStrVec[i].find_last_of('/')+1,InStrVec[i].find_last_of('.')-1);
-		else
-			subname=GetSubstring(InStrVec[i],InStrVec[i].find_last_of('\\')+1,InStrVec[i].find_last_of('.')-1);
-		fprintf(fp,"%s\t1\t%s\n",(char*)InStrVec[i].c_str(),(char*)subname.c_str());
-	}
-	fclose(fp);
-	return 0;
-}
-
 int BuildSDHummingModel::GenFilelist(){
 	int i=0,totalCount=0,countLine=0;
 	int tempItem=0;
@@ -165,32 +151,20 @@ int BuildSDHummingModel::GenFilelist(){
 	string MetaInfo="";
 	int trackNo=0;
 	ifstream InputModelFile;
-	
-	ConvertMidilist(m_pszFileList,"tmplist.txt");
-	
-	//Read for the first time to get the total line, and remove the last line
-	InputModelFile.open("tmplist.txt");
-	if(!InputModelFile.is_open()){
-		std::cout<<"failed"<<endl;
-		return false;
-	}
 
-	while(!InputModelFile.eof()){
-		InputModelFile>>MidiFilename>>trackNo>>MetaInfo;
-		countLine++;
-	}
-	InputModelFile.clear();
-	InputModelFile.close();
-	
-	//Read for the second time to get each item
-	InputModelFile.open("tmplist.txt");
-	if(!InputModelFile.is_open()){
-		std::cout<<"failed"<<endl;
-		return false;
-	}
+	vector<string> InStrVec=ReadFromFile(m_pszFileList);
+	for(int i=0;i<InStrVec.size();i++){
+		string subname;
 		
-	for(i=0;i<countLine;i++){
-		InputModelFile>>MidiFilename>>trackNo>>MetaInfo;
+		if((int)InStrVec[i].find_last_of('/')>0)
+			subname=GetSubstring(InStrVec[i],InStrVec[i].find_last_of('/')+1,InStrVec[i].find_last_of('.')-1);
+		else
+			subname=GetSubstring(InStrVec[i],InStrVec[i].find_last_of('\\')+1,InStrVec[i].find_last_of('.')-1);
+
+		MidiFilename=InStrVec[i];
+		trackNo=1;
+		MetaInfo=subname;
+
 		if(MidiFilename!=""){
 			MidiMetaInfo myMidiInfo;
 			myMidiInfo.MetaInfo=MetaInfo;
@@ -198,9 +172,8 @@ int BuildSDHummingModel::GenFilelist(){
 			m_FileTrackmap.insert(make_pair(trackNo,myMidiInfo));
 		}
 	}
-	
-	InputModelFile.close();
-	return true;	
+
+	return true;
 }
 
 string BuildSDHummingModel::GetSongName(string myStr){
@@ -319,7 +292,7 @@ bool BuildSDHummingModel::ExtractTrackNo(int TrackNo,string MetaInfo,char* filen
 
 int main(int argc, char* argv[]){
 	if (argc != 3){ 
-		printf("usage: SDHBuildModel.exe mid_list.txt model_dir\n"); 
+		printf("usage: ./SDHBuildModel mid_list.txt model_dir\n");
 		return 0; 
 	}
 

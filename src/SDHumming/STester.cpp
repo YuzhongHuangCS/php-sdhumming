@@ -105,7 +105,7 @@ int STester(char* szModel, char* szModelinfo, char* szWav, char* szOut){
 
 int main(int argc, char* argv[]){
 	if (argc != 5){ 
-		printf("usage: SDHumming.exe QBHModel.dat QBHModel.info test.wav result.txt \n"); 
+		printf("usage: ./SDHumming QBHModel.dat QBHModel.info test.wav result.txt \n");
 		return 0; 
 	}
 
