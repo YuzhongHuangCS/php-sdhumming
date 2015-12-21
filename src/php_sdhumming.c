@@ -64,19 +64,19 @@ ZEND_GET_MODULE(sdhumming)
 PHP_FUNCTION(SDHummingSearch) {
 	char* audio;
 	int audio_len;
+	char* model;
+	int model_len;
 	char* info;
 	int info_len;
-	char* score;
-	int score_len;
 	  
 	/* accepting arguments */
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sss", &audio, &audio_len, &info, &info_len, &score, &score_len) != SUCCESS) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sss", &audio, &audio_len, &model, &model_len, &info, &info_len) != SUCCESS) {
 		return;
 	}
 	 
 	php_printf("audio: %s\n", audio);
+	php_printf("model: %s\n", model);
 	php_printf("info: %s\n", info);
-	php_printf("score: %s\n", score);
 }
 
 /**

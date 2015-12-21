@@ -1,5 +1,5 @@
 <?php
 
-echo SDHummingSearch('audio.wav', 'QBH.Model', 'QBHModel.info');
+echo SDHummingSearch('audio.wav', 'QBHModel.dat', 'QBHModel.info');
 
 ?>
