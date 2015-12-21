@@ -27,12 +27,14 @@ extern zend_module_entry sdhumming_module_entry;
 // extension function declaration
 PHP_FUNCTION(SDHummingSearch);
 PHP_FUNCTION(SDHummingBuildModel);
+PHP_FUNCTION(SDHummingLoadModel);
 
 // list of custom PHP functions provided by this extension
 // PHP_FE_END as the last record to mark the end of list
 static zend_function_entry sdhumming_functions[] = {
 	PHP_FE(SDHummingSearch, NULL)
 	PHP_FE(SDHummingBuildModel, NULL)
+	PHP_FE(SDHummingLoadModel, NULL)
 	PHP_FE_END
 };
 
@@ -59,19 +61,7 @@ int nModels = 0;
 int nTotalModel = 0;
 int nTotalSongs = 0;
 
-PHP_MINIT_FUNCTION(sdhumming) {
-	zend_class_entry ce;
-	INIT_CLASS_ENTRY(ce, "SDResultRow", sd_result_row_functions);
-	sd_result_row_ce = zend_register_internal_class(&ce TSRMLS_CC);
-
-	zend_declare_property_null(sd_result_row_ce, "id", sizeof("id") - 1, ZEND_ACC_PUBLIC TSRMLS_CC);
-	zend_declare_property_null(sd_result_row_ce, "info", sizeof("info") - 1, ZEND_ACC_PUBLIC TSRMLS_CC);
-	zend_declare_property_null(sd_result_row_ce, "score", sizeof("score") - 1, ZEND_ACC_PUBLIC TSRMLS_CC);
-
-	// load model
-	char* model = "model/QBHModel.dat";
-	char* info = "model/QBHModel.info";
-
+int load_model(char* model = "model/QBHModel.dat", char* info = "model/QBHModel.info") {
 	nTotalModel = SLoadModel(model, SQBHModels, nModels);
 	if (nTotalModel <= 0) {
 		php_printf("Error on loading model!\n");
@@ -81,9 +71,22 @@ PHP_MINIT_FUNCTION(sdhumming) {
 	nTotalSongs = SReadMelodyDBInfoFile(info, szModelInfoStrs);
 	if (nTotalSongs <= 0) {
 		php_printf("Error on loading modelinfo!\n");
+		return FAILURE;
 	}
 
 	return SUCCESS;
+}
+
+PHP_MINIT_FUNCTION(sdhumming) {
+	zend_class_entry ce;
+	INIT_CLASS_ENTRY(ce, "SDResultRow", sd_result_row_functions);
+	sd_result_row_ce = zend_register_internal_class(&ce TSRMLS_CC);
+
+	zend_declare_property_null(sd_result_row_ce, "id", sizeof("id") - 1, ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sd_result_row_ce, "info", sizeof("info") - 1, ZEND_ACC_PUBLIC TSRMLS_CC);
+	zend_declare_property_null(sd_result_row_ce, "score", sizeof("score") - 1, ZEND_ACC_PUBLIC TSRMLS_CC);
+
+	return load_model();
 }
 
 // MSHUTDOWN implementation
@@ -130,7 +133,7 @@ ZEND_GET_MODULE(sdhumming)
 * function SDHummingSearch($audio);
 */
 PHP_FUNCTION(SDHummingSearch) {
-	char* audio;
+	char* audio = NULL;
 	int audio_len;
 
 	// parse arguments
@@ -186,4 +189,27 @@ PHP_FUNCTION(SDHummingSearch) {
 */
 PHP_FUNCTION(SDHummingBuildModel) {
 	RETURN_STRING("This is SDHummingBuildModel function\n", 1);
+}
+
+/**
+* SDHummingLoadModel implementation
+*/
+PHP_FUNCTION(SDHummingLoadModel) {
+	char* model = NULL;
+	int model_len;
+	char* info = NULL;
+	int info_len;
+
+	/* accepting arguments */
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|ss", &model, &model_len, &info, &info_len) != SUCCESS) {
+		RETURN_BOOL(0);
+	}
+
+	if (model && info) {
+		RETURN_BOOL(load_model(model, info) + 1);
+	} else if (model) {
+		RETURN_BOOL(load_model(model) + 1);
+	} else {
+		RETURN_BOOL(load_model() + 1)
+	}
 }
