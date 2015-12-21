@@ -102,7 +102,6 @@ int STester(char* szModel, char* szModelinfo, char* szWav, char* szOut){
 	return 0;
 }
 
-
 int main(int argc, char* argv[]){
 	if (argc != 5){ 
 		printf("usage: ./SDHumming QBHModel.dat QBHModel.info test.wav result.txt \n");
@@ -113,5 +112,3 @@ int main(int argc, char* argv[]){
 	printf("Elapsed time: %f \n",clock()/(CLOCKS_PER_SEC+0.0f));
 	return 0;
 }
-
- 

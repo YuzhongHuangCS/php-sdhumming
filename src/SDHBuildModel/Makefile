@@ -1,7 +1,7 @@
 CC			= g++
 CFLAGS		=
 LINKFLAGS	=
-SRCS		= SBuildModel.cpp midifile.cpp
+SRCS		= SBuilder.cpp SBuildModel.cpp midifile.cpp
 OBJS		= $(SRCS:.cpp=.o)
 PROG		= SDHBuildModel
 
