@@ -24,4 +24,7 @@ void SProcessQuery(float* fPitchArray,int& Len);
 
 /* note transcription, the inpyt is pitch vector, and the note sequence is generated */
 int STranscribeQueryNote(float* fPitchArray,int& Len,SNote *&Query, int &nNoteLen);
+
+/* both frame-based and note-based melody feature are extracted */
+int SMelodyFeatureExtraction(char* filename, float*& pFeaBuf,int &nFeaLen, SNote *&Query, int &nNoteLen);
 #endif //SDHUMMING_SMELODY_H_

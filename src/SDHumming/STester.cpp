@@ -16,47 +16,6 @@
 #include <stdio.h>
 #include <time.h>
 
-/* both frame-based and note-based melody feature are extracted */
-int SMelodyFeatureExtraction(char* filename, float*& pFeaBuf,int &nFeaLen, SNote *&Query, int &nNoteLen){
-	/* 0. pitch extraction */
-	SPitchContourExtraction(filename,pFeaBuf,nFeaLen);	
-
-	/* 1. five point median filtering */
-	SMedianFilter(pFeaBuf,nFeaLen);
-	if(nFeaLen<20){
-		printf("Too short! please try again\n");
-		if(NULL!=pFeaBuf){
-			delete[] pFeaBuf;
-			pFeaBuf=NULL;
-		}
-		return ERROR_CODE_TOO_SHORT_INPUT;
-	}
-
-	/* 2. post-processing the pitch sequence and re-sampling the pitch sequence */
-	SProcessQuery(pFeaBuf,nFeaLen);
-	if(nFeaLen<20){
-		printf("Too short! please try again\n");
-		if(NULL!=pFeaBuf){
-			delete[] pFeaBuf;
-			pFeaBuf=NULL;
-		}
-		return ERROR_CODE_TOO_SHORT_INPUT;
-	}
-	
-	/* 3. note transcription */
-	STranscribeQueryNote(pFeaBuf,nFeaLen, Query, nNoteLen);
-	if(nFeaLen<20){
-		printf("Too short! please try again\n");
-		if(NULL!=pFeaBuf){
-			delete[] pFeaBuf;
-			pFeaBuf=NULL;
-		}
-		return ERROR_CODE_TOO_SHORT_INPUT;
-	}
-
-	return 0;
-}
-
 /* search one query */
 int STester(char* szModel, char* szModelinfo, char* szWav, char* szOut){
 	int i=0;

@@ -1,4 +1,3 @@
-98
 LOVE_STORY_爱情故事
 Speak_Softly_Love(教父主题曲)
 yesterday_once_more_Carpenters
@@ -56,7 +55,7 @@ yesterday_once_more_Carpenters
 故乡的云
 敢问路在何方
 新鸳鸯蝴蝶梦
-机器猫主题曲
+日动画片机器猫主题曲
 明天会更好
 明月几时有
 星星点灯
@@ -92,6 +91,7 @@ yesterday_once_more_Carpenters
 让我欢喜让我忧
 送别
 铁血丹心
+阳光总在风雨后
 青苹果乐园
 风中有朵雨做的云
 风雨无阻
